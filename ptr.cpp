@@ -27,10 +27,16 @@ void ptr(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 		data = static_cast<const char*>(backing->Data());
 	} else if (info[0]->IsString()) {
 		v8::String::Utf8Value utf8Value(info.GetIsolate(), info[0]);
+#if 1
 		const char* str = *utf8Value;
 		data = (const char *)static_cast<const char*>(str);
-		printf ("STR(%s) = %p\n", data, data);
+#else
+		std::string cppStr(*utf8Value, utf8Value.length());
+		const void *bddr = *reinterpret_cast<const void* const*>(&cppStr);
+		data = static_cast<const char *>(bddr);
+#endif
 #if 0
+		printf ("STR(%s) = %p\n", data, data);
 		v8::Local<v8::String::Utf8Value> str = info[0].As<v8::String::Utf8Value>();
 		//v8::Local<v8::String> str2 = info[0].As<v8::String>();
 		// v8::String::Utf8Value str(info.GetIsolate(), info[0]);
@@ -39,7 +45,7 @@ void ptr(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 #endif
 		v8::Local<v8::String> v8String = info[0].As<v8::String>();
 		const void* addr = *reinterpret_cast<const void* const*>(&v8String);
-		printf ("STR(%s) = %p\n", addr , addr );
+		printf ("STR(%s) = %p\n", (const char *)addr , (void*)addr);
 
 
 		// info.GetReturnValue().Set(Nan::New(cppStr).ToLocalChecked());
