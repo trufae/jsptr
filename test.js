@@ -6,6 +6,6 @@ view[0] = 1;
 view[1] = 2;
 view[2] = 3;
 view[3] = 4;
-ptr(buffer);
-ptr(view);
-
+console.log(ptr(buffer));
+console.log(ptr(view));
+console.log(ptr("Hello World"));
